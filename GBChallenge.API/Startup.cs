@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GBChallenge.API.Data.DataContext;
+using GBChallenge.API.Helpers.Defaults.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -26,10 +30,25 @@ namespace GBChallenge.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddCustomDbContext(Configuration);
+            services.AddIdentity();
+
+            var settingsSection = Configuration.GetSection("GBChallengeSettings");
+            services.Configure<GBChallengeSettings>(settingsSection);
+            var gbChallengeSettings = settingsSection.Get<GBChallengeSettings>();
+
+            services.AddJWT(Configuration, gbChallengeSettings);
+
+            //Swagger Components
+            services
+                .AddVersionedApiExplorer()
+                .AddApiVersioning(o => { o.ReportApiVersions = true; o.AssumeDefaultVersionWhenUnspecified = true; })
+                .AddCustomVersionedApiExplorer(Configuration)
+                .AddSwagger(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -37,12 +56,27 @@ namespace GBChallenge.API
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app
+            .UseSwagger()
+            .UseSwaggerUI(c =>
+            {
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    c.SwaggerEndpoint(
+                            $"/swagger/{description.GroupName}/swagger.json",
+                            description.GroupName.ToUpperInvariant());
+                }
+
+                c.DocumentTitle = "Token Api";
+                c.RoutePrefix = string.Empty;
+            });
         }
     }
 }
