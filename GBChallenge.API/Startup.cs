@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using GBChallenge.API.Data.DataContext;
 using GBChallenge.API.Helpers.Defaults.Extensions;
+using GBChallenge.Core;
+using GBChallenge.Core.Domain.Entities.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,7 +32,7 @@ namespace GBChallenge.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddCustomDbContext(Configuration);
@@ -45,6 +50,15 @@ namespace GBChallenge.API
                 .AddApiVersioning(o => { o.ReportApiVersions = true; o.AssumeDefaultVersionWhenUnspecified = true; })
                 .AddCustomVersionedApiExplorer(Configuration)
                 .AddSwagger(Configuration);
+
+            // Now register our services with Autofac container.
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new CoreModule());
+
+            builder.Populate(services);
+            var container = builder.Build();
+            // Create the IServiceProvider based on the container.
+            return new AutofacServiceProvider(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

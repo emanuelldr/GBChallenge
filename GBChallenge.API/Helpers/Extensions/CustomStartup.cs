@@ -11,6 +11,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using GBChallenge.Core.Domain.Entities.Settings;
 
 namespace GBChallenge.API.Helpers.Defaults.Extensions
 {

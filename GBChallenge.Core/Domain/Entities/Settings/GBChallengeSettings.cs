@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GBChallenge.API
+namespace GBChallenge.Core.Domain.Entities.Settings
 {
     public class GBChallengeSettings
     {

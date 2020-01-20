@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac;
+using GBChallenge.Core.BusinessServices;
+using GBChallenge.Core.Domain.Interfaces;
 
 namespace GBChallenge.Core
 {
@@ -9,8 +11,8 @@ namespace GBChallenge.Core
     {
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
-            //builder.RegisterType<JwtFactory>().As<IJwtFactory>().SingleInstance();
+            builder.RegisterType<AutenticacaoService>().As<IAutenticacaoService>().InstancePerLifetimeScope();
+            builder.RegisterType<RevendedorService>().As<IRevendedorService>().SingleInstance();
         }
     }
 }

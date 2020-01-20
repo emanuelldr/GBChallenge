@@ -34,6 +34,7 @@ namespace GBChallenge.API.Data.DataContext
                     .IsRequired();
 
             });
+            modelBuilder.Entity<Revendedor>().Ignore(c => c.Senha);
             modelBuilder.Entity<Revendedor>().ToTable("Revendedor");
 
 
