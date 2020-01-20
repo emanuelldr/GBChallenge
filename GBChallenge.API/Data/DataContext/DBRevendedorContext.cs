@@ -1,4 +1,4 @@
-﻿using GBChallenge.Domain.Entities;
+﻿using GBChallenge.Core.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GBChallenge.Domain.Interfaces
+namespace GBChallenge.Core.Domain.Interfaces
 {
-    interface ICompraService
+    public interface ICompraRepository
     {
     }
 }

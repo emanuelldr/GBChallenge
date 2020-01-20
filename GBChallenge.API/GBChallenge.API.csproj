@@ -20,6 +20,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\DataBase\**" />
+    <Content Remove="Data\DataBase\**" />
+    <EmbeddedResource Remove="Data\DataBase\**" />
+    <None Remove="Data\DataBase\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -30,11 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\DataBase\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GBChallenge.Domain\GBChallenge.Domain.csproj" />
+    <ProjectReference Include="..\GBChallenge.Core\GBChallenge.Core.csproj" />
   </ItemGroup>
 
 </Project>

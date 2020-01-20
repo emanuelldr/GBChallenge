@@ -1,10 +1,10 @@
-﻿using GBChallenge.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using GBChallenge.Core.Domain.Entities;
 
-namespace GBChallenge.Domain.Interfaces
+namespace GBChallenge.Core.Domain.Interfaces
 {
     interface IRevendedorService
     {

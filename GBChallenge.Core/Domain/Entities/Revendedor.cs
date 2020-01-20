@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GBChallenge.Domain.Entities
+namespace GBChallenge.Core.Domain.Entities
 {
     public class Revendedor
     {
