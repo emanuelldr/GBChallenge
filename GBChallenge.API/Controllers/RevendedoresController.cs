@@ -36,7 +36,7 @@ namespace GBChallenge.API.Controllers
 
             var resultado = await _revendedorService.Adicionar(Revendedor);
 
-            if (!resultado.Successo) return BadRequest(resultado.Erros);
+            if (!resultado.Successo) return BadRequest(resultado.Messagem);
 
             return Ok();
         }
@@ -48,7 +48,7 @@ namespace GBChallenge.API.Controllers
 
             var resultado = await _autenticacaoService.Autenticar(autenticarRequest.Email, autenticarRequest.Senha);
 
-            if(!resultado.Successo) return BadRequest("Usuario ou Senha Invalidos");
+            if(!resultado.Valido) return BadRequest("Usuario ou Senha Invalidos");
 
             return Ok();
         }

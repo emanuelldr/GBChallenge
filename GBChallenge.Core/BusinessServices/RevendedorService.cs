@@ -19,12 +19,16 @@ namespace GBChallenge.Core.BusinessServices
             _revendedorRepository = revendedorRepository;
         }
 
-        public Task<RegistrarResponse> Adicionar(Revendedor revendedor)
+        public async Task<RegistrarResponse> Adicionar(Revendedor revendedor)
         {
             //TODO validar
             //TODO Inserir na tabela de revendedores
 
-            return _autenticacaoService.Registrar();
+            var token  = await _autenticacaoService.Registrar(revendedor.CPF, revendedor.Email, revendedor.Senha);
+
+            var response = new RegistrarResponse(token, true);
+
+            return response;
         }
 
         public Task<AutenticarResponse> Validar(string email, string senha)
