@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,9 @@ namespace GBChallenge.API.Controllers
         }
 
         // POST api/values
+        [ProducesResponseType(typeof(RegistrarResponse), (int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [HttpPost("registrar")]
         public async Task<ActionResult> Registrar(AdicionarRevendedorRequest adicionarRequest)
         {
@@ -45,11 +49,14 @@ namespace GBChallenge.API.Controllers
                 _logger.LogInformation("Erro ao Adicionar Revendedor", resultado.Messagem);
                 return BadRequest(resultado.Messagem);
             }
-            return Ok(resultado);
+            return CreatedAtAction(nameof(Registrar), resultado);
         }
 
 
         [HttpPost("autenticar")]
+        [ProducesResponseType(typeof(AutenticarResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult> Autenticar(AutenticarRevendedorRequest autenticarRequest)
         {
             var resultado = await _revendedorService.Validar(autenticarRequest.Login, autenticarRequest.Senha);
