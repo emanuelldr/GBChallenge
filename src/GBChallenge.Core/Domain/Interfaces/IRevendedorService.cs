@@ -6,7 +6,7 @@ namespace GBChallenge.Core.Domain.Interfaces
 {
     public interface IRevendedorService
     {
-        Task<RegistrarResponse> Adicionar(Revendedor revendedor);
-        Task<AutenticarResponse> Validar(string email, string senha);
+        Task<RegistrarRevendedorResponse> Adicionar(Revendedor revendedor);
+        Task<AutenticarRevendedorResponse> Validar(string email, string senha);
     }
 }

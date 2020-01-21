@@ -23,25 +23,25 @@ namespace GBChallenge.Core.BusinessServices
             _logger = logger;
         }
 
-        public async Task<RegistrarResponse> Adicionar(Revendedor revendedor)
+        public async Task<RegistrarRevendedorResponse> Adicionar(Revendedor revendedor)
         {
             try
             {
                 if (!ValidarEmail(revendedor.Email))
-                    return new RegistrarResponse("Email Invalido");
+                    return new RegistrarRevendedorResponse("Email Invalido");
 
                 revendedor.CPF = LimparCPF(revendedor.CPF);
                 if (!ValidarCPF(revendedor.CPF))
-                    return new RegistrarResponse("CPF Invalido");
+                    return new RegistrarRevendedorResponse("CPF Invalido");
 
                 var token = await _autenticacaoService.Registrar(revendedor.CPF, revendedor.Email, revendedor.Senha);
 
                 if (!token.Successo)
-                    return new RegistrarResponse(token.Messagem);
+                    return new RegistrarRevendedorResponse(token.Messagem);
 
                 await _revendedorRepository.Inserir(revendedor);
 
-                var response = new RegistrarResponse(token.Token);
+                var response = new RegistrarRevendedorResponse(token.Token);
 
                 return response;
             }
@@ -52,21 +52,21 @@ namespace GBChallenge.Core.BusinessServices
             }
         }
 
-        public async Task<AutenticarResponse> Validar(string login, string senha)
+        public async Task<AutenticarRevendedorResponse> Validar(string login, string senha)
         {
             try
             {
                 if (!ValidarEmail(login) && !ValidarCPF(LimparCPF(login)))
-                    return new AutenticarResponse("Login com formato invalido");
+                    return new AutenticarRevendedorResponse("Login com formato invalido");
 
                 var revendedor = await _revendedorRepository.Buscar(login);
 
                 if (revendedor == null || revendedor.Id == 0)
-                    return new AutenticarResponse("Usuário não encontrado");
+                    return new AutenticarRevendedorResponse("Usuário não encontrado");
 
                 var token = await _autenticacaoService.Autenticar(revendedor.CPF, senha);
 
-                return new AutenticarResponse(token.Token, token.Messagem, token.Successo);
+                return new AutenticarRevendedorResponse(token.Token, token.Messagem, token.Successo);
             }
             catch (Exception exception)
             {

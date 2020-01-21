@@ -20,7 +20,6 @@ namespace GBChallenge.API.Controllers
         private readonly IRevendedorService _revendedorService;
         private readonly ILogger<RevendedoresController> _logger;
 
-
         public RevendedoresController(IRevendedorService revendedorService, ILogger<RevendedoresController> logger)
         {
             _revendedorService = revendedorService;
@@ -28,7 +27,7 @@ namespace GBChallenge.API.Controllers
         }
 
         // POST api/values
-        [ProducesResponseType(typeof(RegistrarResponse), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(RegistrarRevendedorResponse), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [HttpPost("registrar")]
@@ -54,7 +53,7 @@ namespace GBChallenge.API.Controllers
 
 
         [HttpPost("autenticar")]
-        [ProducesResponseType(typeof(AutenticarResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AutenticarRevendedorResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult> Autenticar(AutenticarRevendedorRequest autenticarRequest)
