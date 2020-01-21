@@ -8,6 +8,7 @@ using GBChallenge.Core.Domain.Entities.Dto;
 using GBChallenge.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace GBChallenge.API.Controllers
 {
@@ -16,20 +17,19 @@ namespace GBChallenge.API.Controllers
     public class RevendedoresController : ControllerBase
     {
         private readonly IRevendedorService _revendedorService;
-        private readonly IAutenticacaoService _autenticacaoService;
+        private readonly ILogger<RevendedoresController> _logger;
 
-        public RevendedoresController(IRevendedorService revendedorService, IAutenticacaoService autenticacaoService)
+
+        public RevendedoresController(IRevendedorService revendedorService, ILogger<RevendedoresController> logger)
         {
             _revendedorService = revendedorService;
-            _autenticacaoService = autenticacaoService;
+            _logger = logger;
         }
 
         // POST api/values
         [HttpPost("registrar")]
         public async Task<ActionResult> Registrar(AdicionarRevendedorRequest adicionarRequest)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(e => e.Errors));
-
             var Revendedor = new Revendedor
             {
                 CPF = adicionarRequest.CPF,
@@ -40,19 +40,25 @@ namespace GBChallenge.API.Controllers
 
             var resultado = await _revendedorService.Adicionar(Revendedor);
 
-            if (!resultado.Successo) return BadRequest(resultado.Messagem);
-
+            if (!resultado.Successo)
+            {
+                _logger.LogInformation("Erro ao Adicionar Revendedor", resultado.Messagem);
+                return BadRequest(resultado.Messagem);
+            }
             return Ok(resultado);
         }
+
 
         [HttpPost("autenticar")]
         public async Task<ActionResult> Autenticar(AutenticarRevendedorRequest autenticarRequest)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(e => e.Errors));
-
             var resultado = await _revendedorService.Validar(autenticarRequest.Login, autenticarRequest.Senha);
 
-            if (!resultado.Successo) return BadRequest(resultado.Messagem);
+            if (!resultado.Successo)
+            {
+                _logger.LogInformation("Erro ao Validar Revendedor", resultado.Messagem);
+                return BadRequest(resultado.Messagem);
+            }
 
             return Ok(resultado);
         }

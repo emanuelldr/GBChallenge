@@ -9,7 +9,7 @@ namespace GBChallenge.Infrastructure
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<RevendedorRepository>().As<IRevendedorRepository>().InstancePerLifetimeScope();
-            //builder.RegisterType<JwtFactory>().As<IJwtFactory>().SingleInstance();
+            builder.RegisterType<CompraRepository>().As<ICompraRepository>().InstancePerLifetimeScope();
         }
     }
 }

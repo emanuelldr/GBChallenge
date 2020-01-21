@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GBChallenge.Core.Domain.Entities;
 using GBChallenge.Core.Domain.Entities.Dto;
 using GBChallenge.Core.Domain.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace GBChallenge.Core.BusinessServices
 {
@@ -13,11 +14,13 @@ namespace GBChallenge.Core.BusinessServices
     {
         private readonly IAutenticacaoService _autenticacaoService;
         private readonly IRevendedorRepository _revendedorRepository;
+        private readonly ILogger<RevendedorService> _logger;
 
-        public RevendedorService(IAutenticacaoService autenticacaoService, IRevendedorRepository revendedorRepository)
+        public RevendedorService(IAutenticacaoService autenticacaoService, IRevendedorRepository revendedorRepository, ILogger<RevendedorService> logger)
         {
             _autenticacaoService = autenticacaoService;
             _revendedorRepository = revendedorRepository;
+            _logger = logger;
         }
 
         public async Task<RegistrarResponse> Adicionar(Revendedor revendedor)
@@ -42,9 +45,10 @@ namespace GBChallenge.Core.BusinessServices
 
                 return response;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                return new RegistrarResponse(e.Message);
+                _logger.LogError(exception, exception.Message);
+                throw exception;
             }
         }
 
@@ -64,9 +68,10 @@ namespace GBChallenge.Core.BusinessServices
 
                 return new AutenticarResponse(token.Token, token.Messagem, token.Successo);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                return new AutenticarResponse(e.Message); ;
+                _logger.LogError(exception, exception.Message);
+                throw exception;
             }
         }
 
