@@ -114,10 +114,10 @@ namespace GBChallenge.API.Helpers.Defaults.Extensions
         {
             var info = new Info()
             {
-                Title = $"RDI Token API {description.ApiVersion}",
+                Title = $"Grupo Boticário Challenge {description.ApiVersion}",
                 Version = description.ApiVersion.ToString(),
                 Description = ".NET Core Rest API with SQLITE, EFCore and Self-Documented with Swagger",
-                Contact = new Contact() { Name = "RDI/Emanuel Rocha", Email = "" },
+                Contact = new Contact() { Name = "Grupo Boticário/Emanuel Rocha", Email = "" },
                 TermsOfService = "Shareware",
                 License = new License() { Name = "EMANUEL ROCHA V" + Assembly.GetExecutingAssembly().GetName().Version, Url = "https://github.com/ZXVentures/code-challenge/blob/master/backend.md" }
             };
