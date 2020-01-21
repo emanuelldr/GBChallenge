@@ -1,5 +1,4 @@
-﻿using GBChallenge.API.Data.DataContext;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +11,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using GBChallenge.Core.Domain.Entities.Settings;
+using GBChallenge.Infrastructure.Data.EntityFramework;
 
 namespace GBChallenge.API.Helpers.Defaults.Extensions
 {
@@ -19,7 +19,7 @@ namespace GBChallenge.API.Helpers.Defaults.Extensions
     {
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DBRevendedorContext>(x => x.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<GBChallengeContext>(x => x.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
             return services;
         }
 
@@ -27,7 +27,7 @@ namespace GBChallenge.API.Helpers.Defaults.Extensions
         {
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<DBRevendedorContext>()
+                .AddEntityFrameworkStores<GBChallengeContext>()
                 .AddDefaultTokenProviders();
 
             return services;

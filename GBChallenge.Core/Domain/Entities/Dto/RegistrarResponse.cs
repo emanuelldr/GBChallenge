@@ -2,15 +2,20 @@
 
 namespace GBChallenge.Core.Domain.Entities.Dto
 {
-    public class RegistrarResponse : BaseResponse
+    public class RegistrarResponse : TokenResponse
     {
-        public Token Token { get; }
-
-        public RegistrarResponse(Token token, bool success = false, string message = null) : base(success, message)
+        public RegistrarResponse(string message = "", bool success = false) : base(message, success)
         {
-            Token = token;
+        }
+
+        public RegistrarResponse(Token token, string message = null, bool success = true) : base(token, message, success)
+        {
         }
     }
 }
+
+
+   
+
 
 

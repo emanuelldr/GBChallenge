@@ -5,10 +5,10 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using GBChallenge.API.Data.DataContext;
 using GBChallenge.API.Helpers.Defaults.Extensions;
 using GBChallenge.Core;
 using GBChallenge.Core.Domain.Entities.Settings;
+using GBChallenge.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -53,7 +53,9 @@ namespace GBChallenge.API
 
             // Now register our services with Autofac container.
             var builder = new ContainerBuilder();
+            builder.RegisterModule(new InfrastructureModule());
             builder.RegisterModule(new CoreModule());
+            
 
             builder.Populate(services);
             var container = builder.Build();

@@ -10,7 +10,7 @@ namespace GBChallenge.Core.Domain.Interfaces
 {
     public interface IAutenticacaoService
     {
-        Task<Token> Registrar(string cpf, string email, string senha);
-        Task<Token> Autenticar(string cpf, string senha);
+        Task<TokenResponse> Registrar(string cpf, string email, string senha);
+        Task<TokenResponse> Autenticar(string cpf, string senha);
     }
 }

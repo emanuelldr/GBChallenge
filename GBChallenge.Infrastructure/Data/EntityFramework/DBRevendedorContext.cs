@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace GBChallenge.API.Data.DataContext
+namespace GBChallenge.Infrastructure.Data.EntityFramework
 {
-    public class DBRevendedorContext : IdentityDbContext
+    public class GBChallengeContext : IdentityDbContext
     {
-        public DBRevendedorContext(DbContextOptions<DBRevendedorContext> options) : base(options) { }
+        public GBChallengeContext(DbContextOptions<GBChallengeContext> options) : base(options) { }
 
         public virtual DbSet<Revendedor> Revendedores { get; set; }
         public virtual DbSet<Compra> Compras { get; set; }

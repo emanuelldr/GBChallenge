@@ -20,13 +20,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\DataBase\**" />
-    <Content Remove="Data\DataBase\**" />
-    <EmbeddedResource Remove="Data\DataBase\**" />
-    <None Remove="Data\DataBase\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.1" />
@@ -39,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GBChallenge.Core\GBChallenge.Core.csproj" />
+    <ProjectReference Include="..\GBChallenge.Infrastructure\GBChallenge.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

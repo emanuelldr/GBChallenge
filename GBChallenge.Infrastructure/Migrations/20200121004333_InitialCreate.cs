@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace GBChallenge.API.Migrations
+namespace GBChallenge.Infrastructure.Migrations
 {
     public partial class InitialCreate : Migration
     {

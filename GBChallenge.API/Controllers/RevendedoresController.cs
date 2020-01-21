@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GBChallenge.API.ViewModels;
 using GBChallenge.Core.Domain.Entities;
+using GBChallenge.Core.Domain.Entities.Dto;
 using GBChallenge.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,14 +32,17 @@ namespace GBChallenge.API.Controllers
 
             var Revendedor = new Revendedor
             {
-
+                CPF = adicionarRequest.CPF,
+                Email = adicionarRequest.Email,
+                Nome = adicionarRequest.Nome,
+                Senha = adicionarRequest.Senha
             };
 
             var resultado = await _revendedorService.Adicionar(Revendedor);
 
             if (!resultado.Successo) return BadRequest(resultado.Messagem);
 
-            return Ok();
+            return Ok(resultado);
         }
 
         [HttpPost("autenticar")]
@@ -46,11 +50,11 @@ namespace GBChallenge.API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(e => e.Errors));
 
-            var resultado = await _autenticacaoService.Autenticar(autenticarRequest.Email, autenticarRequest.Senha);
+            var resultado = await _revendedorService.Validar(autenticarRequest.Login, autenticarRequest.Senha);
 
-            if(!resultado.Valido) return BadRequest("Usuario ou Senha Invalidos");
+            if (!resultado.Successo) return BadRequest(resultado.Messagem);
 
-            return Ok();
+            return Ok(resultado);
         }
     }
 }

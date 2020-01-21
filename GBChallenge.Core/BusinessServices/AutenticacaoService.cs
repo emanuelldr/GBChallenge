@@ -28,7 +28,7 @@ namespace GBChallenge.Core.BusinessServices
             _gbChallengeSettings = gbChallengeSettings.Value;
         }
 
-        public async Task<Token> Registrar(string cpf, string email, string senha)
+        public async Task<TokenResponse> Registrar(string cpf, string email, string senha)
         {
             var usuario = new IdentityUser
             {
@@ -39,22 +39,22 @@ namespace GBChallenge.Core.BusinessServices
 
             var resultado = await _userManager.CreateAsync(usuario, senha);
 
-            if(!resultado.Succeeded)
-                return new Token(); //TokenInvalido
+            if (!resultado.Succeeded)
+                return new TokenResponse("Erro durante a criação do usuário: " + resultado.Errors.ToString());
 
-            return await GerarJWT(cpf);
+            return new TokenResponse(await GerarJWT(cpf));
         }
 
-        public async Task<Token> Autenticar(string cpf, string senha)
+        public async Task<TokenResponse> Autenticar(string cpf, string senha)
         {
 
             var resultado =
                 await _signInManager.PasswordSignInAsync(cpf, senha, false,false);
 
             if (!resultado.Succeeded)
-                return new Token(); //TokenInvalido
+                return new TokenResponse("Erro durante a autenticação, senha ou login invalido");
 
-            return await GerarJWT(cpf);
+            return new TokenResponse(await GerarJWT(cpf));
         }
 
         private async Task<Token> GerarJWT(string claimName)

@@ -15,7 +15,7 @@ namespace GBChallenge.API.ViewModels
 
     public class AutenticarRevendedorRequest
     {
-        public string Email { get; set; }
+        public string Login { get; set; }
         public string Senha { get; set; }
     }
 }

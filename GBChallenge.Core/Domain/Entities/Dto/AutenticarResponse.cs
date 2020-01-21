@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace GBChallenge.Core.Domain.Entities.Dto
 {
-    public class AutenticarResponse : BaseResponse
+    public class AutenticarResponse : TokenResponse
     {
-        public Token Token { get; }
-
-        public AutenticarResponse(Token token, bool success = false, string message = null) : base(success, message)
+        public AutenticarResponse(string message = "", bool success = false) : base(message, success)
         {
-            Token = token;
+        }
+
+        public AutenticarResponse(Token token, string message = null, bool success = false) : base(token, message, success)
+        {
         }
     }
 }

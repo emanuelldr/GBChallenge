@@ -22,22 +22,52 @@ namespace GBChallenge.Core.BusinessServices
 
         public async Task<RegistrarResponse> Adicionar(Revendedor revendedor)
         {
-            //TODO Validar
-            //TODO Inserir na tabela de revendedores
+            try
+            {
+                if (!ValidarEmail(revendedor.Email))
+                    return new RegistrarResponse("Email Invalido");
 
-            var token  = await _autenticacaoService.Registrar(revendedor.CPF, revendedor.Email, revendedor.Senha);
+                revendedor.CPF = LimparCPF(revendedor.CPF);
+                if (!ValidarCPF(revendedor.CPF))
+                    return new RegistrarResponse("CPF Invalido");
 
-            var response = new RegistrarResponse(token, true);
+                var token = await _autenticacaoService.Registrar(revendedor.CPF, revendedor.Email, revendedor.Senha);
 
-            return response;
+                if (!token.Successo)
+                    return new RegistrarResponse(token.Messagem);
+
+                await _revendedorRepository.Inserir(revendedor);
+
+                var response = new RegistrarResponse(token.Token);
+
+                return response;
+            }
+            catch (Exception e)
+            {
+                return new RegistrarResponse(e.Message);
+            }
         }
 
-        public Task<AutenticarResponse> Validar(string email, string senha)
+        public async Task<AutenticarResponse> Validar(string login, string senha)
         {
-            //TODO Buscar na base por CPF/Email
-            //TODO Autenticar no Identity
-            
-            throw new NotImplementedException();
+            try
+            {
+                if (!ValidarEmail(login) && !ValidarCPF(LimparCPF(login)))
+                    return new AutenticarResponse("Login com formato invalido");
+
+                var revendedor = await _revendedorRepository.Buscar(login);
+
+                if (revendedor == null || revendedor.Id == 0)
+                    return new AutenticarResponse("Usuário não encontrado");
+
+                var token = await _autenticacaoService.Autenticar(revendedor.CPF, senha);
+
+                return new AutenticarResponse(token.Token, token.Messagem, token.Successo);
+            }
+            catch (Exception e)
+            {
+                return new AutenticarResponse(e.Message); ;
+            }
         }
 
 
