@@ -1,2 +1,2 @@
 # GBChallenge
-GBChallenge
+Desafio Grupo Boticário 
