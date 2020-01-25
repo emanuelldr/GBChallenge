@@ -42,7 +42,7 @@ namespace GBChallenge.API
             services.Configure<GBChallengeSettings>(settingsSection);
             var gbChallengeSettings = settingsSection.Get<GBChallengeSettings>();
 
-            services.AddJWT(Configuration, gbChallengeSettings);
+            services.AddJWT(Configuration, gbChallengeSettings.TokenSettings);
 
             //Swagger Components
             services
@@ -76,7 +76,6 @@ namespace GBChallenge.API
             }
 
             app.UseAuthentication();
-            app.UseHttpsRedirection();
             app.UseMvc();
 
             app

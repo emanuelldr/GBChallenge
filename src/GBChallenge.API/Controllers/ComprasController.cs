@@ -40,16 +40,25 @@ namespace GBChallenge.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [HttpPatch]
-        public async Task<ActionResult> Editar(EditarCompraRequest adicionarRequest)
+        public async Task<ActionResult> Atualizar(EditarCompraRequest adicionarRequest)
         {
             return Ok();
         }
 
-        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [HttpDelete("{idCompra}")]
-        public async Task<ActionResult> Deletar([FromQuery]int idCompra)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Excluir([FromQuery]int id)
+        {
+            return Ok();
+        }
+
+        [ProducesResponseType(typeof(ListarComprasResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [HttpGet("{id}")]
+        public async Task<ActionResult> Obter([FromQuery] int idCompra)
         {
             return Ok(); ;
         }
@@ -57,8 +66,8 @@ namespace GBChallenge.API.Controllers
         [ProducesResponseType(typeof(ListarComprasResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [HttpGet("{idCompra}")]
-        public async Task<ActionResult> Listar([FromQuery] int idCompra)
+        [HttpGet()]
+        public async Task<ActionResult> Listar()
         {
             return Ok(); ;
         }

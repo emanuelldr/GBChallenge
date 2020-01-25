@@ -33,9 +33,9 @@ namespace GBChallenge.API.Helpers.Defaults.Extensions
             return services;
         }
 
-        public static IServiceCollection AddJWT(this IServiceCollection services, IConfiguration configuration, GBChallengeSettings gbChallengeSettings )
+        public static IServiceCollection AddJWT(this IServiceCollection services, IConfiguration configuration, TokenSettings tokenSettings )
         {
-            var chaveApi = Encoding.ASCII.GetBytes(gbChallengeSettings.ChaveAPI);
+            var chaveApi = Encoding.ASCII.GetBytes(tokenSettings.ChaveAPI);
 
             services.AddAuthentication(options =>
             {
@@ -51,8 +51,8 @@ namespace GBChallenge.API.Helpers.Defaults.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(chaveApi),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = gbChallengeSettings.ValidoEm,
-                    ValidIssuer = gbChallengeSettings.Emissor
+                    ValidAudience = tokenSettings.ValidoEm,
+                    ValidIssuer = tokenSettings.Emissor
                 };
             });
             return services;

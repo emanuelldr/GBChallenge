@@ -18,14 +18,14 @@ namespace GBChallenge.Core.BusinessServices
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly GBChallengeSettings _gbChallengeSettings;
+        private readonly TokenSettings _tokenSettings;
 
         public AutenticacaoService(SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager, IOptions<GBChallengeSettings> gbChallengeSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _gbChallengeSettings = gbChallengeSettings.Value;
+            _tokenSettings = gbChallengeSettings.Value.TokenSettings;
         }
 
         public async Task<TokenResponse> Registrar(string cpf, string email, string senha)
@@ -40,7 +40,7 @@ namespace GBChallenge.Core.BusinessServices
             var resultado = await _userManager.CreateAsync(usuario, senha);
 
             if (!resultado.Succeeded)
-                return new TokenResponse("Erro durante a criação do usuário: " + resultado.Errors.ToString());
+                return new TokenResponse("Erro durante a criação do usuário: " + resultado.Errors.ToString(), 400);
 
             return new TokenResponse(await GerarJWT(cpf));
         }
@@ -52,7 +52,7 @@ namespace GBChallenge.Core.BusinessServices
                 await _signInManager.PasswordSignInAsync(cpf, senha, false,false);
 
             if (!resultado.Succeeded)
-                return new TokenResponse("Erro durante a autenticação, senha ou login invalido");
+                return new TokenResponse("Erro durante a autenticação, senha ou login invalido", 400);
 
             return new TokenResponse(await GerarJWT(cpf));
         }
@@ -60,13 +60,13 @@ namespace GBChallenge.Core.BusinessServices
         private async Task<Token> GerarJWT(string claimName)
         {
             var tokeHandler = new JwtSecurityTokenHandler();
-            var chaveApi = Encoding.ASCII.GetBytes(_gbChallengeSettings.ChaveAPI);
-            var expiraEm = DateTime.UtcNow.AddMinutes(_gbChallengeSettings.ExpiracaoMinutos);
+            var chaveApi = Encoding.ASCII.GetBytes(_tokenSettings.ChaveAPI);
+            var expiraEm = DateTime.UtcNow.AddMinutes(_tokenSettings.ExpiracaoMinutos);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Issuer = _gbChallengeSettings.Emissor,
-                Audience = _gbChallengeSettings.ValidoEm,
+                Issuer = _tokenSettings.Emissor,
+                Audience = _tokenSettings.ValidoEm,
                 Expires = expiraEm,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(chaveApi), SecurityAlgorithms.HmacSha256Signature),
                 Subject = new ClaimsIdentity(new Claim[]

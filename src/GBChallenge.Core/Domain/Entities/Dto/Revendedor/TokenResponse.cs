@@ -6,11 +6,11 @@ namespace GBChallenge.Core.Domain.Entities.Dto
     {
         public Token Token { get; }
 
-        public TokenResponse(string message = "", bool success = false) : base(success, message)
+        public TokenResponse(string mensagem, int codigoRetorno) : base(mensagem, false, codigoRetorno)
         {
         }
 
-        public TokenResponse(Token token, string message = "", bool success = true) : base(success, message)
+        public TokenResponse(Token token) : base()
         {
             Token = token;
         }

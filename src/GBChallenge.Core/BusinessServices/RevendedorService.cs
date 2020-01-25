@@ -14,12 +14,15 @@ namespace GBChallenge.Core.BusinessServices
     {
         private readonly IAutenticacaoService _autenticacaoService;
         private readonly IRevendedorRepository _revendedorRepository;
+        private readonly ICashBackClient _cashBackClient;
         private readonly ILogger<RevendedorService> _logger;
 
-        public RevendedorService(IAutenticacaoService autenticacaoService, IRevendedorRepository revendedorRepository, ILogger<RevendedorService> logger)
+        public RevendedorService(IAutenticacaoService autenticacaoService, IRevendedorRepository revendedorRepository, 
+            ICashBackClient cashBackClient, ILogger<RevendedorService> logger)
         {
             _autenticacaoService = autenticacaoService;
             _revendedorRepository = revendedorRepository;
+            _cashBackClient = cashBackClient;
             _logger = logger;
         }
 
@@ -28,16 +31,16 @@ namespace GBChallenge.Core.BusinessServices
             try
             {
                 if (!ValidarEmail(revendedor.Email))
-                    return new RegistrarRevendedorResponse("Email Invalido");
+                    return new RegistrarRevendedorResponse("Email Invalido", 400);
 
                 revendedor.CPF = LimparCPF(revendedor.CPF);
                 if (!ValidarCPF(revendedor.CPF))
-                    return new RegistrarRevendedorResponse("CPF Invalido");
+                    return new RegistrarRevendedorResponse("CPF Invalido", 400);
 
                 var token = await _autenticacaoService.Registrar(revendedor.CPF, revendedor.Email, revendedor.Senha);
 
                 if (!token.Successo)
-                    return new RegistrarRevendedorResponse(token.Messagem);
+                    return new RegistrarRevendedorResponse(token.Messagem, 400);
 
                 await _revendedorRepository.Inserir(revendedor);
 
@@ -57,16 +60,16 @@ namespace GBChallenge.Core.BusinessServices
             try
             {
                 if (!ValidarEmail(login) && !ValidarCPF(LimparCPF(login)))
-                    return new AutenticarRevendedorResponse("Login com formato invalido");
+                    return new AutenticarRevendedorResponse("Login com formato invalido", 400);
 
                 var revendedor = await _revendedorRepository.Buscar(login);
 
                 if (revendedor == null || revendedor.Id == 0)
-                    return new AutenticarRevendedorResponse("Usuário não encontrado");
+                    return new AutenticarRevendedorResponse("Usuário não encontrado", 404);
 
                 var token = await _autenticacaoService.Autenticar(revendedor.CPF, senha);
 
-                return new AutenticarRevendedorResponse(token.Token, token.Messagem, token.Successo);
+                return new AutenticarRevendedorResponse(token.Token);
             }
             catch (Exception exception)
             {
@@ -75,6 +78,32 @@ namespace GBChallenge.Core.BusinessServices
             }
         }
 
+        public async Task<ObterAcumuladoResponse> ObterAcumulado(string cpf)
+        {
+            try
+            {
+                var cpfLimpo = LimparCPF(cpf);
+                if (!ValidarCPF(cpfLimpo))
+                    return new ObterAcumuladoResponse("CPF invalido", 400);
+
+                var revendedor = await _revendedorRepository.Buscar(cpfLimpo);
+
+                if (revendedor == null || revendedor.Id == 0)
+                    return new ObterAcumuladoResponse("Revendedor não encontrado", 404);
+
+                var respostaClient = await _cashBackClient.ObterAcumulado(cpfLimpo);
+
+                if (respostaClient.Body == null)
+                    throw new ArgumentNullException($"Erro ao buscar o acumulado do Revendedor {cpfLimpo}");
+
+                return new ObterAcumuladoResponse(respostaClient.Body.Credit);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, exception.Message);
+                throw exception;
+            }
+        }
 
         private bool ValidarEmail(string email)
         {

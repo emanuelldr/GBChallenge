@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GBChallenge.Core.Domain.Entities.Dto
 {
-    public class ObterAcumuladoResponse : BaseResponse
+    public class ExcluirCompraResponse : BaseResponse
     {
     }
 }
