@@ -8,6 +8,7 @@ namespace GBChallenge.Core.Domain.Interfaces
     {
         Task<RegistrarRevendedorResponse> Adicionar(Revendedor revendedor);
         Task<AutenticarRevendedorResponse> Validar(string email, string senha);
+        Task<ObterRevendedorResponse> Obter(string cpf);
         Task<ObterAcumuladoResponse> ObterAcumulado(string cpf);
     }
 }

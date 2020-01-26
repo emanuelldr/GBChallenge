@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GBChallenge.Core.Domain.Entities;
 
 namespace GBChallenge.Core.Domain.Interfaces
@@ -8,8 +9,7 @@ namespace GBChallenge.Core.Domain.Interfaces
         Task Atualizar(Compra compra);
         Task Excluir(Compra compra);
         Task Inserir(Compra compra);
-        Task Obter(Compra compra);
-        Task<Compra> Listar();
-        Task<Compra> Listar(string CPFRevendedor);
+        Task<List<Compra>> Listar(int idRevendedor);
+        Task<Compra> Obter(int id);
     }
 }

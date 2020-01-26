@@ -1,7 +1,9 @@
 ﻿using GBChallenge.Core.Domain.Entities;
 using GBChallenge.Core.Domain.Interfaces;
 using GBChallenge.Infrastructure.Data.EntityFramework;
-using System;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GBChallenge.Infrastructure.Data.Repositories
@@ -15,34 +17,40 @@ namespace GBChallenge.Infrastructure.Data.Repositories
             _context = context;
         }
 
-        public Task Atualizar(Compra compra)
+        public async Task Atualizar(Compra compra)
         {
-            throw new NotImplementedException();
+            _context.Compras.Update(compra);
+            await _context.SaveChangesAsync();
         }
 
-        public Task Excluir(Compra compra)
+        public async Task Excluir(Compra compra)
         {
-            throw new NotImplementedException();
+             _context.Compras.Remove(compra);
+            await _context.SaveChangesAsync();
+        }
+         
+        public async Task Inserir(Compra compra)
+        {
+            await _context.Compras.AddAsync(compra);
+            await _context.SaveChangesAsync();
         }
 
-        public Task Inserir(Compra compra)
+        public async Task<List<Compra>> Listar(int idRevendedor)
         {
-            throw new NotImplementedException();
+            var result = await _context.Compras
+                .Where(c => c.IdRevendedor == idRevendedor)
+                .ToListAsync();
+
+            return result;
         }
 
-        public Task Obter(Compra compra)
+        public async Task<Compra> Obter(int id)
         {
-            throw new NotImplementedException();
-        }
+            var result = await _context.Compras
+                .Where(c => c.IdRevendedor == id)
+                .FirstOrDefaultAsync();
 
-        public Task<Compra> Listar()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Compra> Listar(string CPFRevendedor)
-        {
-            throw new NotImplementedException();
+            return result;
         }
     }
 }

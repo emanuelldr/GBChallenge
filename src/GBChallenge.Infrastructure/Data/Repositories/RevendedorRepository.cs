@@ -18,7 +18,7 @@ namespace GBChallenge.Infrastructure.Data.Repositories
 
         public async Task Inserir(Revendedor revendedor)
         {
-            await _context.Revendedores.AddAsync(revendedor);
+            var result = await _context.Revendedores.AddAsync(revendedor);
             _context.SaveChanges();
         }
 

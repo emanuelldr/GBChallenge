@@ -15,7 +15,7 @@ namespace GBChallenge.API.ViewModels
         public double Valor { get; set; }
 
         [Required(ErrorMessage = "Campo Data é Obrigatório")]
-        public string Data { get; set; }
+        public DateTime Data { get; set; }
 
         [Required(ErrorMessage = "Campo Senha é Obrigatório")]
         public string CPFRevendedor { get; set; }
@@ -27,8 +27,6 @@ namespace GBChallenge.API.ViewModels
 
         public double Valor { get; set; }
 
-        public string Data { get; set; }
-
-        public string CPFRevendedor { get; set; }
+        public DateTime Data { get; set; }
     }
 }

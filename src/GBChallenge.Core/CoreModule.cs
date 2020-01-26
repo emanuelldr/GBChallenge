@@ -10,6 +10,7 @@ namespace GBChallenge.Core
         {
             builder.RegisterType<AutenticacaoService>().As<IAutenticacaoService>().InstancePerLifetimeScope();
             builder.RegisterType<RevendedorService>().As<IRevendedorService>().InstancePerLifetimeScope();
+            builder.RegisterType<CompraService>().As<ICompraService>().InstancePerLifetimeScope();
         }
     }
 }

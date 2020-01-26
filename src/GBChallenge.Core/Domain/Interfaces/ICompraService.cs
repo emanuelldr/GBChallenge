@@ -6,10 +6,9 @@ namespace GBChallenge.Core.Domain.Interfaces
 {
     public interface ICompraService
     {
-        Task<RegistrarRevendedorResponse> Adicionar(Compra compra);
-        Task<RegistrarRevendedorResponse> Atualizar(Compra compra);
+        Task<AdicionarCompraResponse> Adicionar(Compra compra, string cpf);
+        Task<AtualizarCompraResponse> Atualizar(Compra compra);
         Task<ExcluirCompraResponse> Excluir(int id);
-        Task<ListarComprasResponse> Listar(int idRevendedor);
-        Task<ObterCompraResponse> Obter(int idRevendedor);
+        Task<ListarComprasResponse> Listar(string cpfRevendedor);
     }
 }

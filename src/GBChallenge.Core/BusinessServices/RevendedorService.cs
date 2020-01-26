@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GBChallenge.Core.Domain.Entities;
 using GBChallenge.Core.Domain.Entities.Dto;
 using GBChallenge.Core.Domain.Interfaces;
+using GBChallenge.Core.Domain.SimpleTypes;
 using Microsoft.Extensions.Logging;
 
 namespace GBChallenge.Core.BusinessServices
@@ -76,6 +77,34 @@ namespace GBChallenge.Core.BusinessServices
             }
         }
 
+        public async Task<ObterRevendedorResponse> Obter(string cpf)
+        {
+            try
+            {
+                var cpfLimpo = LimparCPF(cpf);
+                if (!ValidarCPF(cpfLimpo))
+                    return new ObterRevendedorResponse("CPF invalido", 400);
+
+                var revendedor = await _revendedorRepository.Buscar(cpfLimpo);
+
+                var revDto = new RevendedorDto
+                {
+                    CPF = revendedor.CPF,
+                    Email = revendedor.Email,
+                    Id = revendedor.Id,
+                    Nome = revendedor.Nome,
+                    CompraAutoAprovada = AprovacaoAutomatica(revendedor.CPF)
+                };
+
+                return new ObterRevendedorResponse(revDto);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, exception.Message);
+                throw exception;
+            }
+        }
+
         public async Task<ObterAcumuladoResponse> ObterAcumulado(string cpf)
         {
             try
@@ -101,6 +130,11 @@ namespace GBChallenge.Core.BusinessServices
                 _logger.LogError(exception, exception.Message);
                 throw exception;
             }
+        }
+
+        private bool AprovacaoAutomatica(string cpf) 
+        {
+            return (CPFAprovacaoAutomatica.Valor == LimparCPF(cpf));
         }
 
         private bool ValidarEmail(string email)
