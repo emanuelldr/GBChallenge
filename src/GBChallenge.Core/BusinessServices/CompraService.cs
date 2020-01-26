@@ -25,88 +25,120 @@ namespace GBChallenge.Core.BusinessServices
 
         public async Task<AdicionarCompraResponse> Adicionar(Compra compra, string cpf, string cpfToken)
         {
-            var revendedorDb = await _revendedorService.Obter(cpf);
-            
-            if(!revendedorDb.Successo)
-                return new AdicionarCompraResponse(revendedorDb.Messagem, revendedorDb.CodigoRetorno);
+            try
+            {
+                var revendedorDb = await _revendedorService.Obter(cpf);
 
-            var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, revendedorDb.Revendedor.Id);
+                if (!revendedorDb.Successo)
+                    return new AdicionarCompraResponse(revendedorDb.Messagem, revendedorDb.CodigoRetorno);
 
-            if (!mesmoRevendedor)
-                return new AdicionarCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
+                var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, revendedorDb.Revendedor.Id);
 
-            compra.Status = revendedorDb.Revendedor.CompraAutoAprovada ? StatusCompra.Aprovado : StatusCompra.EmValidacao;
-            compra.IdRevendedor = revendedorDb.Revendedor.Id;
-            compra.PercentualCashBack = CalculaCashBackCompra(compra.Valor);
+                if (!mesmoRevendedor)
+                    return new AdicionarCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
 
-            if(!ValidarCompra(compra))
-                return new AdicionarCompraResponse("Codigo ou Valor da compra Invalidos", 400);
+                compra.Status = revendedorDb.Revendedor.CompraAutoAprovada ? StatusCompra.Aprovado : StatusCompra.EmValidacao;
+                compra.IdRevendedor = revendedorDb.Revendedor.Id;
+                compra.PercentualCashBack = CalculaCashBackCompra(compra.Valor);
 
-            var compraId = await _compraRepository.Inserir(compra);
+                if (!ValidarCompra(compra))
+                    return new AdicionarCompraResponse("Codigo ou Valor da compra Invalidos", 400);
 
-            return new AdicionarCompraResponse(compraId);
+                var compraId = await _compraRepository.Inserir(compra);
+
+                return new AdicionarCompraResponse(compraId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
 
         }
 
         public async Task<AtualizarCompraResponse> Atualizar(Compra compra, string cpfToken)
         {
-            if (compra == null)
-                return new AtualizarCompraResponse("Compra Invalida", 400);
+            try
+            {
+                if (compra == null)
+                    return new AtualizarCompraResponse("Compra Invalida", 400);
 
-            var compraDb = await _compraRepository.Obter(compra.Id);
-            
-            if(compraDb?.Id == null)
-                return new AtualizarCompraResponse("Compra não encontrada", 404);
+                var compraDb = await _compraRepository.Obter(compra.Id);
+
+                if (compraDb?.Id == null)
+                    return new AtualizarCompraResponse("Compra não encontrada", 404);
 
 
-            var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, compraDb.IdRevendedor);
+                var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, compraDb.IdRevendedor);
 
-            if (!mesmoRevendedor)
-                return new AtualizarCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
+                if (!mesmoRevendedor)
+                    return new AtualizarCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
 
-            if (compraDb.Status != StatusCompra.EmValidacao)
-                return new AtualizarCompraResponse("Não é possível alterar a compra~, compra não está mais em validação.", 400);
-            
-            compraDb = AtualizarDados(compraDb, compra);
+                if (compraDb.Status != StatusCompra.EmValidacao)
+                    return new AtualizarCompraResponse("Não é possível alterar a compra~, compra não está mais em validação.", 400);
 
-            if (!ValidarCompra(compraDb))
-                return new AtualizarCompraResponse("Codigo ou Valor da compra Invalidos", 400);
+                compraDb = AtualizarDados(compraDb, compra);
 
-            await _compraRepository.Atualizar(compraDb);
+                if (!ValidarCompra(compraDb))
+                    return new AtualizarCompraResponse("Codigo ou Valor da compra Invalidos", 400);
 
-            return new AtualizarCompraResponse();
+                await _compraRepository.Atualizar(compraDb);
+
+                return new AtualizarCompraResponse();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
         }
 
         public async Task<ExcluirCompraResponse> Excluir(int id, string cpfToken)
         {
-            if (id <= 0)
-                return new ExcluirCompraResponse("Id da compra Invalido", 400);
+            try
+            {
+                if (id <= 0)
+                    return new ExcluirCompraResponse("Id da compra Invalido", 400);
 
-            var compra = await _compraRepository.Obter(id);
+                var compra = await _compraRepository.Obter(id);
 
-            if (compra?.Id == null)
-                return new ExcluirCompraResponse("Compra não encontrada", 404);
+                if (compra?.Id == null)
+                    return new ExcluirCompraResponse("Compra não encontrada", 404);
 
-            var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, compra.IdRevendedor);
+                var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, compra.IdRevendedor);
 
-            if (!mesmoRevendedor)
-                return new ExcluirCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
+                if (!mesmoRevendedor)
+                    return new ExcluirCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
 
-            await _compraRepository.Excluir(compra);
+                await _compraRepository.Excluir(compra);
 
-            return new ExcluirCompraResponse();
+                return new ExcluirCompraResponse();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
         }
 
         public async Task<ListarComprasResponse> Listar(string cpfRevendedor)
         {
-            var retornoRevendedor = await _revendedorService.Obter(cpfRevendedor);
+            try
+            {
+                var retornoRevendedor = await _revendedorService.Obter(cpfRevendedor);
 
-            if (!retornoRevendedor.Successo)
-                return new ListarComprasResponse(retornoRevendedor.Messagem, retornoRevendedor.CodigoRetorno);
+                if (!retornoRevendedor.Successo)
+                    return new ListarComprasResponse(retornoRevendedor.Messagem, retornoRevendedor.CodigoRetorno);
 
-            var compras = await _compraRepository.Listar(retornoRevendedor.Revendedor.Id);
+                var compras = await _compraRepository.Listar(retornoRevendedor.Revendedor.Id);
 
-            return new ListarComprasResponse(Converter(compras));
+                return new ListarComprasResponse(Converter(compras));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
 
         }
 
