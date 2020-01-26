@@ -1,5 +1,4 @@
 ﻿using GBChallenge.Core.Domain.Entities.ClientResponses;
-using GBChallenge.Core.Domain.Entities.Dto;
 using GBChallenge.Core.Domain.Entities.Settings;
 using GBChallenge.Core.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -8,7 +7,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -72,7 +70,7 @@ namespace GBChallenge.Infrastructure.CrossCutting.ExternalClients
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error ao Obter Acumulado ", ex);
+                _logger.LogError("Erro ao Obter Acumulado ", ex);
                 throw ex;
             }
         }

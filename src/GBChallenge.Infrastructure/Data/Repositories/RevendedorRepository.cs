@@ -2,7 +2,6 @@
 using GBChallenge.Core.Domain.Interfaces;
 using GBChallenge.Infrastructure.Data.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 

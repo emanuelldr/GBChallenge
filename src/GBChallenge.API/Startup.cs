@@ -11,14 +11,10 @@ using GBChallenge.Core.Domain.Entities.Settings;
 using GBChallenge.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace GBChallenge.API
 {
@@ -51,7 +47,7 @@ namespace GBChallenge.API
                 .AddCustomVersionedApiExplorer(Configuration)
                 .AddSwagger(Configuration);
 
-            // Now register our services with Autofac container.
+            // DI/IoC
             var builder = new ContainerBuilder();
             builder.RegisterModule(new InfrastructureModule());
             builder.RegisterModule(new CoreModule());
@@ -89,7 +85,7 @@ namespace GBChallenge.API
                             description.GroupName.ToUpperInvariant());
                 }
 
-                c.DocumentTitle = "Token Api";
+                c.DocumentTitle = "Grupo Boticario Api";
                 c.RoutePrefix = string.Empty;
             });
         }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace GBChallenge.Core.Domain.Entities.Dto
 {
     public class RegistrarRevendedorResponse : TokenResponse
