@@ -175,7 +175,9 @@ namespace GBChallenge.Infrastructure.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Codigo = table.Column<string>(maxLength: 15, nullable: false),
                     Valor = table.Column<double>(nullable: false),
+                    Status = table.Column<string>(nullable: true),
                     IdRevendedor = table.Column<int>(nullable: false),
+                    PercentualCashBack = table.Column<int>(nullable: false),
                     Data = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>

@@ -10,6 +10,7 @@ namespace GBChallenge.Core.Domain.Entities
         public string Status { get; set; }
         public int IdRevendedor { get; set; }
         public Revendedor Revendedor { get; set; }
+        public int PercentualCashBack { get; set; }
         public DateTime Data { get; set; }
     }
 }

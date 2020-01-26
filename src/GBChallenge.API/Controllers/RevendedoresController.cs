@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using GBChallenge.API.Controllers.Base;
 using GBChallenge.API.ViewModels;
@@ -21,11 +22,13 @@ namespace GBChallenge.API.Controllers
             _revendedorService = revendedorService;
         }
 
-        // POST api/values
+        /// <summary>
+        /// Registrar/Adicionar novo Revendedor
+        /// </summary>
         [ProducesResponseType(typeof(RegistrarRevendedorResponse), (int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [HttpPost()]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
+        [HttpPost]
         public async Task<ActionResult> RegistrarRevendedor(AdicionarRevendedorRequest adicionarRequest)
         {
             var Revendedor = new Revendedor
@@ -42,11 +45,14 @@ namespace GBChallenge.API.Controllers
         }
 
 
+        /// <summary>
+        /// Validar/Autenticar dados do Revendedor
+        /// </summary>
         [HttpPost("autenticar")]
         [ProducesResponseType(typeof(AutenticarRevendedorResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult> AutenticarRevendedor(AutenticarRevendedorRequest autenticarRequest)
         {
             return TratarRetorno<AutenticarRevendedorResponse>(
@@ -54,11 +60,14 @@ namespace GBChallenge.API.Controllers
                 nameof(AutenticarRevendedor));
         }
 
+        /// <summary>
+        /// Retornar o Acumulado de CashBack para o Revendedor 
+        /// </summary>
         [Authorize]
         [ProducesResponseType(typeof(ObterAcumuladoResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
         [HttpGet("cashback")]
         public async Task<ActionResult> ObterCashBackAcumuladoRevendedor()
         {

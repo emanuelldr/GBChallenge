@@ -27,13 +27,16 @@ namespace GBChallenge.API.Controllers
         }
 
 
+        /// <summary>
+        /// Adicionar nova Compra
+        /// </summary>
         [ProducesResponseType(typeof(AdicionarCompraResponse), (int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
         [HttpPost]
         public async Task<ActionResult> AdicionarCompra(AdicionarCompraRequest adicionarRequest)
         {
-            var cpf = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
+            var cpfToken = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
 
             var compra = new Compra
             {
@@ -43,18 +46,21 @@ namespace GBChallenge.API.Controllers
             };
             
             return TratarRetorno<AdicionarCompraResponse>(
-                await _compraService.Adicionar(compra, adicionarRequest.CPFRevendedor),
+                await _compraService.Adicionar(compra, adicionarRequest.CPFRevendedor, cpfToken),
                 nameof(AdicionarCompra));
         }
 
+        /// <summary>
+        /// Atualizar Compra
+        /// </summary>
         [ProducesResponseType(typeof(AtualizarCompraResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [HttpPatch]
+        [ProducesResponseType(typeof(string),(int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
+        [HttpPatch("{id}")]
         public async Task<ActionResult> AtualizarCompra(EditarCompraRequest adicionarRequest)
         {
-            var cpf = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
+            var cpfToken = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
 
             var compra = new Compra
             {
@@ -64,36 +70,43 @@ namespace GBChallenge.API.Controllers
             };
           
             return TratarRetorno<AtualizarCompraResponse>(
-                await _compraService.Atualizar(compra),
+                await _compraService.Atualizar(compra, cpfToken),
                 nameof(AtualizarCompra));
         }
 
-        
+
+        /// <summary>
+        /// Excluir Compra
+        /// </summary>
         [ProducesResponseType(typeof(ExcluirCompraResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> ExcluirCompra([FromQuery] int id)
         {
-            var cpf = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
+            var cpfToken = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
+
             return TratarRetorno<ExcluirCompraResponse>(
-                await _compraService.Excluir(id),
+                await _compraService.Excluir(id, cpfToken),
                 nameof(ExcluirCompra));
         }
 
 
+        /// <summary>
+        /// Listar compras do Revendedor
+        /// </summary>
         [ProducesResponseType(typeof(ListarComprasResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [HttpGet()]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
+        [HttpGet]
         public async Task<ActionResult> ListarCompras()
         {
-            var cpf = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
+            var cpfToken = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
 
             return TratarRetorno<ListarComprasResponse>(
-                await _compraService.Listar(cpf),
+                await _compraService.Listar(cpfToken),
                 nameof(ListarCompras));
         }
     }

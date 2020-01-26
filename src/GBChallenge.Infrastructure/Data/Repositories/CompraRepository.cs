@@ -29,10 +29,12 @@ namespace GBChallenge.Infrastructure.Data.Repositories
             await _context.SaveChangesAsync();
         }
          
-        public async Task Inserir(Compra compra)
+        public async Task<int> Inserir(Compra compra)
         {
-            await _context.Compras.AddAsync(compra);
+            var compraResult = await _context.Compras.AddAsync(compra);
             await _context.SaveChangesAsync();
+
+            return compraResult.Entity.Id;
         }
 
         public async Task<List<Compra>> Listar(int idRevendedor)

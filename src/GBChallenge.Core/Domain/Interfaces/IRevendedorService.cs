@@ -10,5 +10,6 @@ namespace GBChallenge.Core.Domain.Interfaces
         Task<AutenticarRevendedorResponse> Validar(string email, string senha);
         Task<ObterRevendedorResponse> Obter(string cpf);
         Task<ObterAcumuladoResponse> ObterAcumulado(string cpf);
+        Task<bool> ValidarAnalogia(string cpfToken, int idRevendedor);
     }
 }

@@ -58,13 +58,15 @@ namespace GBChallenge.Infrastructure.Data.EntityFramework
                 entity.Property(e => e.IdRevendedor)
                     .IsRequired();
 
+                entity.Property(e => e.PercentualCashBack);
+
             });
 
             modelBuilder.Entity<Compra>()
                 .ToTable("Compra")
-                .HasOne(p => p.Revendedor)
-                .WithMany(b => b.Compras)
-                .HasForeignKey(p => p.IdRevendedor);
+                .HasOne(c => c.Revendedor)
+                .WithMany(r => r.Compras)
+                .HasForeignKey(c => c.IdRevendedor);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -89,6 +89,14 @@ namespace GBChallenge.API.Helpers.Defaults.Extensions
                         foreach (var description in provider.ApiVersionDescriptions)
                         {
                             opts.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
+                            opts.AddSecurityDefinition("Bearer",
+                                        new ApiKeyScheme
+                                        {
+                                            In = "header",
+                                            Description = "API Segura, necessário prover o Token de Acesso",
+                                            Name = "Authorization",
+                                            Type = "apiKey"
+                                        });
                         }
                     }
 

@@ -3,18 +3,20 @@ using System;
 using GBChallenge.Infrastructure.Data.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GBChallenge.Infrastructure.Migrations
 {
     [DbContext(typeof(GBChallengeContext))]
-    partial class DBRevendedorContextModelSnapshot : ModelSnapshot
+    [Migration("20200126183625_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
             modelBuilder.Entity("GBChallenge.Core.Domain.Entities.Compra", b =>
                 {
@@ -28,6 +30,10 @@ namespace GBChallenge.Infrastructure.Migrations
                     b.Property<DateTime>("Data");
 
                     b.Property<int>("IdRevendedor");
+
+                    b.Property<int>("PercentualCashBack");
+
+                    b.Property<string>("Status");
 
                     b.Property<double>("Valor");
 

@@ -132,6 +132,16 @@ namespace GBChallenge.Core.BusinessServices
             }
         }
 
+        public async Task<bool> ValidarAnalogia(string cpfToken, int idRevendedor = 0)
+        {
+            if (string.IsNullOrWhiteSpace(cpfToken) ||  idRevendedor <= 0)
+                return false;
+
+            var revendedor = await Obter(cpfToken);
+
+            return (revendedor.Successo && revendedor.Revendedor.Id == idRevendedor);          
+        }
+
         private bool AprovacaoAutomatica(string cpf) 
         {
             return (CPFAprovacaoAutomatica.Valor == LimparCPF(cpf));
@@ -185,6 +195,5 @@ namespace GBChallenge.Core.BusinessServices
 
             return cpf.EndsWith(digito);
         }
-
     }
 }

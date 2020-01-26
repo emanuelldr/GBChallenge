@@ -23,26 +23,32 @@ namespace GBChallenge.Core.BusinessServices
             _logger = logger;
         }
 
-        public async Task<AdicionarCompraResponse> Adicionar(Compra compra, string cpf)
+        public async Task<AdicionarCompraResponse> Adicionar(Compra compra, string cpf, string cpfToken)
         {
             var revendedorDb = await _revendedorService.Obter(cpf);
             
             if(!revendedorDb.Successo)
                 return new AdicionarCompraResponse(revendedorDb.Messagem, revendedorDb.CodigoRetorno);
 
+            var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, revendedorDb.Revendedor.Id);
+
+            if (!mesmoRevendedor)
+                return new AdicionarCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
+
             compra.Status = revendedorDb.Revendedor.CompraAutoAprovada ? StatusCompra.Aprovado : StatusCompra.EmValidacao;
             compra.IdRevendedor = revendedorDb.Revendedor.Id;
+            compra.PercentualCashBack = CalculaCashBackCompra(compra.Valor);
 
             if(!ValidarCompra(compra))
                 return new AdicionarCompraResponse("Codigo ou Valor da compra Invalidos", 400);
 
-            await _compraRepository.Inserir(compra);
+            var compraId = await _compraRepository.Inserir(compra);
 
-            return new AdicionarCompraResponse();
+            return new AdicionarCompraResponse(compraId);
 
         }
 
-        public async Task<AtualizarCompraResponse> Atualizar(Compra compra)
+        public async Task<AtualizarCompraResponse> Atualizar(Compra compra, string cpfToken)
         {
             if (compra == null)
                 return new AtualizarCompraResponse("Compra Invalida", 400);
@@ -50,17 +56,28 @@ namespace GBChallenge.Core.BusinessServices
             var compraDb = await _compraRepository.Obter(compra.Id);
             
             if(compraDb?.Id == null)
-                new ExcluirCompraResponse("Compra não encontrada", 404);
+                return new AtualizarCompraResponse("Compra não encontrada", 404);
 
-            if(compraDb.Status != StatusCompra.EmValidacao)
-                new ExcluirCompraResponse("Não é possível alterar a compra~, compra não está mais em validação.", 400);
 
-            await _compraRepository.Atualizar(compra);
+            var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, compra.IdRevendedor);
+
+            if (!mesmoRevendedor)
+                return new AtualizarCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
+
+            if (compraDb.Status != StatusCompra.EmValidacao)
+                return new AtualizarCompraResponse("Não é possível alterar a compra~, compra não está mais em validação.", 400);
+
+            if (!ValidarCompra(compra))
+                return new AtualizarCompraResponse("Codigo ou Valor da compra Invalidos", 400);
+
+            compraDb = Atualizar(compraDb, compra);
+
+            await _compraRepository.Atualizar(compraDb);
 
             return new AtualizarCompraResponse();
         }
 
-        public async Task<ExcluirCompraResponse> Excluir(int id)
+        public async Task<ExcluirCompraResponse> Excluir(int id, string cpfToken)
         {
             if (id <= 0)
                 return new ExcluirCompraResponse("Id da compra Invalido", 400);
@@ -68,7 +85,12 @@ namespace GBChallenge.Core.BusinessServices
             var compra = await _compraRepository.Obter(id);
 
             if (compra?.Id == null)
-                new ExcluirCompraResponse("Compra não encontrada", 404);
+                return new ExcluirCompraResponse("Compra não encontrada", 404);
+
+            var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, compra.IdRevendedor);
+
+            if (!mesmoRevendedor)
+                return new ExcluirCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
 
             await _compraRepository.Excluir(compra);
 
@@ -107,8 +129,17 @@ namespace GBChallenge.Core.BusinessServices
                 Codigo = compra.Codigo,
                 Data = compra.Data,
                 Valor = compra.Valor,
-                PercentualCashBack = CalculaCashBackCompra(compra.Valor)
+                PercentualCashBack = compra.PercentualCashBack
             };
+        }
+
+        private Compra Atualizar(Compra compraDb, Compra compraAtualizada)
+        {
+            compraDb.Codigo = compraAtualizada.Codigo;
+            compraDb.Data = compraAtualizada.Data;
+            compraDb.Valor = compraAtualizada.Valor;
+            compraDb.PercentualCashBack = CalculaCashBackCompra(compraAtualizada.Valor);
+            return compraDb;
         }
 
         private IEnumerable<CompraDto> Converter(IEnumerable<Compra> compras)
