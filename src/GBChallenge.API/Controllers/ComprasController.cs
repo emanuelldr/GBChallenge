@@ -23,7 +23,6 @@ namespace GBChallenge.API.Controllers
         public ComprasController(ICompraService compraService, ILogger<BaseController> baseLogger) : base(baseLogger)
         {
             _compraService = compraService;
-            //Todo Corrigir todas as validações de CPF via token/api
         }
 
 
