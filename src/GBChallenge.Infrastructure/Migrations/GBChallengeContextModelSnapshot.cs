@@ -37,6 +37,9 @@ namespace GBChallenge.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Codigo")
+                        .IsUnique();
+
                     b.HasIndex("IdRevendedor");
 
                     b.ToTable("Compra");

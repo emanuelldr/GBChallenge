@@ -58,7 +58,7 @@ namespace GBChallenge.API.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
         [HttpPatch("{id}")]
-        public async Task<ActionResult> AtualizarCompra(EditarCompraRequest adicionarRequest)
+        public async Task<ActionResult> AtualizarCompra(int id, EditarCompraRequest adicionarRequest)
         {
             var cpfToken = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
 
@@ -66,7 +66,8 @@ namespace GBChallenge.API.Controllers
             {
                 Codigo = adicionarRequest.Codigo,
                 Valor = adicionarRequest.Valor,
-                Data = adicionarRequest.Data
+                Data = adicionarRequest.Data,
+                Id = id
             };
           
             return TratarRetorno<AtualizarCompraResponse>(
@@ -83,7 +84,7 @@ namespace GBChallenge.API.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> ExcluirCompra([FromQuery] int id)
+        public async Task<ActionResult> ExcluirCompra(int id)
         {
             var cpfToken = User.Identity.Name; //cpf deve estar contido no jwt; Se não tiver, há erro de autenticação
 

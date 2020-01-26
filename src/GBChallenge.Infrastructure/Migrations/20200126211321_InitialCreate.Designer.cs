@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBChallenge.Infrastructure.Migrations
 {
     [DbContext(typeof(GBChallengeContext))]
-    [Migration("20200126183625_InitialCreate")]
+    [Migration("20200126211321_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,9 @@ namespace GBChallenge.Infrastructure.Migrations
                     b.Property<double>("Valor");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Codigo")
+                        .IsUnique();
 
                     b.HasIndex("IdRevendedor");
 

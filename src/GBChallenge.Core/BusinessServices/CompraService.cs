@@ -59,18 +59,18 @@ namespace GBChallenge.Core.BusinessServices
                 return new AtualizarCompraResponse("Compra não encontrada", 404);
 
 
-            var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, compra.IdRevendedor);
+            var mesmoRevendedor = await _revendedorService.ValidarAnalogia(cpfToken, compraDb.IdRevendedor);
 
             if (!mesmoRevendedor)
                 return new AtualizarCompraResponse("CPF Inforamdo não corresponde com o Usuário de acesso", 400);
 
             if (compraDb.Status != StatusCompra.EmValidacao)
                 return new AtualizarCompraResponse("Não é possível alterar a compra~, compra não está mais em validação.", 400);
+            
+            compraDb = AtualizarDados(compraDb, compra);
 
-            if (!ValidarCompra(compra))
+            if (!ValidarCompra(compraDb))
                 return new AtualizarCompraResponse("Codigo ou Valor da compra Invalidos", 400);
-
-            compraDb = Atualizar(compraDb, compra);
 
             await _compraRepository.Atualizar(compraDb);
 
@@ -118,6 +118,9 @@ namespace GBChallenge.Core.BusinessServices
             if(string.IsNullOrWhiteSpace(compra.Codigo))
                 return false;
 
+            if (compra.Data == DateTime.MinValue)
+                return false;
+
             return true;
         }
 
@@ -133,12 +136,12 @@ namespace GBChallenge.Core.BusinessServices
             };
         }
 
-        private Compra Atualizar(Compra compraDb, Compra compraAtualizada)
+        private Compra AtualizarDados(Compra compraDb, Compra compraAtualizada)
         {
-            compraDb.Codigo = compraAtualizada.Codigo;
-            compraDb.Data = compraAtualizada.Data;
+            compraDb.Codigo = !string.IsNullOrWhiteSpace(compraAtualizada.Codigo) ? compraAtualizada.Codigo : compraDb.Codigo;
+            compraDb.Data = (compraAtualizada.Data != DateTime.MinValue) ? compraAtualizada.Data : compraDb.Data;
             compraDb.Valor = compraAtualizada.Valor;
-            compraDb.PercentualCashBack = CalculaCashBackCompra(compraAtualizada.Valor);
+            compraDb.PercentualCashBack = CalculaCashBackCompra(compraDb.Valor);
             return compraDb;
         }
 

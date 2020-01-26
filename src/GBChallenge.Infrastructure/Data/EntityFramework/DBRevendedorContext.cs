@@ -45,6 +45,7 @@ namespace GBChallenge.Infrastructure.Data.EntityFramework
                         .ValueGeneratedOnAdd()
                         .IsRequired();
 
+                entity.HasIndex(e => e.Codigo).IsUnique();
                 entity.Property(e => e.Codigo)
                     .HasMaxLength(15)
                     .IsRequired();

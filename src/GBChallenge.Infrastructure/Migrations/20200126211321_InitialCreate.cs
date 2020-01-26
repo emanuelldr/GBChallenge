@@ -229,6 +229,12 @@ namespace GBChallenge.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Compra_Codigo",
+                table: "Compra",
+                column: "Codigo",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Compra_IdRevendedor",
                 table: "Compra",
                 column: "IdRevendedor");

@@ -49,7 +49,7 @@ namespace GBChallenge.Infrastructure.Data.Repositories
         public async Task<Compra> Obter(int id)
         {
             var result = await _context.Compras
-                .Where(c => c.IdRevendedor == id)
+                .Where(c => c.Id == id)
                 .FirstOrDefaultAsync();
 
             return result;
