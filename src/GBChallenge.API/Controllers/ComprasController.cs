@@ -57,26 +57,8 @@ namespace GBChallenge.API.Controllers
         [ProducesResponseType(typeof(ListarComprasResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [HttpGet("{id}")]
-        public async Task<ActionResult> Obter([FromQuery] int idCompra)
-        {
-            return Ok(); ;
-        }
-
-        [ProducesResponseType(typeof(ListarComprasResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [HttpGet()]
         public async Task<ActionResult> Listar()
-        {
-            return Ok(); ;
-        }
-
-        [ProducesResponseType(typeof(ObterAcumuladoResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [HttpGet]
-        public async Task<ActionResult> ObterAcumulado()
         {
             return Ok(); ;
         }

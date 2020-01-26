@@ -6,9 +6,9 @@ namespace GBChallenge.API.Controllers.Base
 {
     public class BaseController : ControllerBase
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<BaseController> _logger;
 
-        public BaseController(ILogger logger)
+        public BaseController(ILogger<BaseController> logger)
         {
             _logger = logger;
         }
