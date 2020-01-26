@@ -59,6 +59,9 @@ namespace GBChallenge.Infrastructure.Data.EntityFramework
                 entity.Property(e => e.IdRevendedor)
                     .IsRequired();
 
+                entity.Property(e => e.Status)
+                    .IsRequired();
+
                 entity.Property(e => e.PercentualCashBack);
 
             });

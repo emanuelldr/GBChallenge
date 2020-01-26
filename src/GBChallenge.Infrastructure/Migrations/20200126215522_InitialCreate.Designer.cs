@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBChallenge.Infrastructure.Migrations
 {
     [DbContext(typeof(GBChallengeContext))]
-    [Migration("20200126211321_InitialCreate")]
+    [Migration("20200126215522_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,8 @@ namespace GBChallenge.Infrastructure.Migrations
 
                     b.Property<int>("PercentualCashBack");
 
-                    b.Property<string>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired();
 
                     b.Property<double>("Valor");
 

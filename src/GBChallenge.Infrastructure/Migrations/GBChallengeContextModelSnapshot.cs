@@ -31,7 +31,8 @@ namespace GBChallenge.Infrastructure.Migrations
 
                     b.Property<int>("PercentualCashBack");
 
-                    b.Property<string>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired();
 
                     b.Property<double>("Valor");
 

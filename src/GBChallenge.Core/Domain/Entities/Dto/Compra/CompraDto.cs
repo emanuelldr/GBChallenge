@@ -10,5 +10,6 @@ namespace GBChallenge.Core.Domain.Entities.Dto
         public double Valor { get; set; }
         public int PercentualCashBack { get; set; }
         public DateTime Data { get; set; }
+        public string Status { get; set; }
     }
 }

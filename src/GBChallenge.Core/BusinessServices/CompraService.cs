@@ -164,7 +164,8 @@ namespace GBChallenge.Core.BusinessServices
                 Codigo = compra.Codigo,
                 Data = compra.Data,
                 Valor = compra.Valor,
-                PercentualCashBack = compra.PercentualCashBack
+                PercentualCashBack = compra.PercentualCashBack,
+                Status = compra.Status
             };
         }
 
