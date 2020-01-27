@@ -8,7 +8,7 @@ namespace GBChallenge.Core.Domain.Entities.Dto
         {
         }
 
-        public AdicionarCompraResponse(int id) : base()
+        public AdicionarCompraResponse(int id) : base("", true, 201)
         {
             Id = id;
         }
