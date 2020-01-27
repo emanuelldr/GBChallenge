@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GBChallenge.Tests.Base.Unit.BusinessServices
+namespace GBChallenge.Tests.Unit.BusinessServices
 {
     class RevendedorService_Tests
     {
