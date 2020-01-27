@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GBChallenge.API", "GBChalle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GBChallenge.Core", "GBChallenge.Core\GBChallenge.Core.csproj", "{7EB09849-809B-4048-92F9-7A12F92AF401}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GBChallenge.Infrastructure", "GBChallenge.Infrastructure\GBChallenge.Infrastructure.csproj", "{E287F628-7F40-4B06-9388-8CB75A516987}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GBChallenge.Infrastructure", "GBChallenge.Infrastructure\GBChallenge.Infrastructure.csproj", "{E287F628-7F40-4B06-9388-8CB75A516987}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BDFB30A3-0025-4F89-ADB1-2D0C3BDA613A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GBChallenge.Tests", "GBChallenge.Tests\GBChallenge.Tests.csproj", "{41E5FA37-31B7-4466-A0A3-BF3122A98DCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +31,16 @@ Global
 		{E287F628-7F40-4B06-9388-8CB75A516987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E287F628-7F40-4B06-9388-8CB75A516987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E287F628-7F40-4B06-9388-8CB75A516987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41E5FA37-31B7-4466-A0A3-BF3122A98DCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41E5FA37-31B7-4466-A0A3-BF3122A98DCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41E5FA37-31B7-4466-A0A3-BF3122A98DCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41E5FA37-31B7-4466-A0A3-BF3122A98DCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{41E5FA37-31B7-4466-A0A3-BF3122A98DCA} = {BDFB30A3-0025-4F89-ADB1-2D0C3BDA613A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C91DFCCF-6A7E-4A2C-9DE4-CF8A143D6363}
