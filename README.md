@@ -5,6 +5,7 @@ Desafio Grupo Boticário
 
 - Dotnet Core 2.2
 - EF Core
+- JWT
 - SQLIte
 - Swagger
 
