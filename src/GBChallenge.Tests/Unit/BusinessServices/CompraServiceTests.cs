@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GBChallenge.Tests.Unit.BusinessServices
 {
-    class RevendedorService_Tests
+    class CompraServiceTests
     {
     }
 }

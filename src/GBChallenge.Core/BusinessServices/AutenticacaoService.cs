@@ -29,6 +29,9 @@ namespace GBChallenge.Core.BusinessServices
 
         public async Task<TokenResponse> Registrar(string cpf, string email, string senha)
         {
+            if(string.IsNullOrEmpty(cpf) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+                return new TokenResponse("Cpf, email e senha não podem ser nulos: ", 400);
+
             var usuario = new IdentityUser
             {
                 UserName = cpf,
@@ -46,6 +49,8 @@ namespace GBChallenge.Core.BusinessServices
 
         public async Task<TokenResponse> Autenticar(string cpf, string senha)
         {
+            if (string.IsNullOrEmpty(cpf) || string.IsNullOrEmpty(senha))
+                return new TokenResponse("Cpf, email e senha não podem ser nulos: ", 400);
 
             var resultado =
                 await _signInManager.PasswordSignInAsync(cpf, senha, false,false);
