@@ -7,7 +7,7 @@ namespace GBChallenge.Core.Domain.Entities.Dto
         {
         }
 
-        public RegistrarRevendedorResponse(Token token) : base(token)
+        public RegistrarRevendedorResponse(Token token) : base(token, 201)
         {
         }
     }

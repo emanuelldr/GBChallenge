@@ -9,10 +9,16 @@ namespace GBChallenge.Core.Domain.Entities.Dto
         {
         }
 
+        public TokenResponse(Token token, int codigoRetorno) : base("", true, codigoRetorno)
+        {
+            Token = token;
+        }
+
         public TokenResponse(Token token) : base()
         {
             Token = token;
         }
+
     }
 }
 

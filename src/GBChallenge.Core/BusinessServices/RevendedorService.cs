@@ -39,7 +39,7 @@ namespace GBChallenge.Core.BusinessServices
                 var token = await _autenticacaoService.Registrar(revendedor.CPF, revendedor.Email, revendedor.Senha);
 
                 if (!token.Successo)
-                    return new RegistrarRevendedorResponse(token.Messagem, 400);
+                    return new RegistrarRevendedorResponse(token.Messagem, token.CodigoRetorno);
 
                 await _revendedorRepository.Inserir(revendedor);
 
