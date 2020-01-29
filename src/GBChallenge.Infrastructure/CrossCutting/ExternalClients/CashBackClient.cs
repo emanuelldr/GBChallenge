@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using GBChallenge.Core.Domain.SimpleTypes;
 
 namespace GBChallenge.Infrastructure.CrossCutting.ExternalClients
 {
@@ -29,7 +30,7 @@ namespace GBChallenge.Infrastructure.CrossCutting.ExternalClients
         {
             try
             {
-                var configuracao = _externalClientsSettings.First(c => c.NomeServico == "ObterAcumuladoCashBack");
+                var configuracao = _externalClientsSettings.First(c => c.NomeServico == ExternalServices.ObterAcumuladoCashBack);
 
                 string queryString;
                 using (var content = new FormUrlEncodedContent(new Dictionary<string, string>()
