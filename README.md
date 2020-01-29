@@ -36,11 +36,11 @@ Desafio Grupo Boticário
 ## Rotas 
 - POST - /api/Revendedores => Adicionar/Registrar Revendedor
 - POST - /api/Revendedores/autenticar => Autenticar/Validar Revendedor
-- GET - /api/Revendedores/cashback => Retornar o Acumulado de CashBack para o Revendedor (Necessita JWT)
+- GET - /api/Revendedores/cashback => Retornar o Acumulado de CashBack para o Revendedor **(Necessita JWT)**
       
-- POST /api/Compras => Adicionar nova Compra (Necessita JWT)
-- GET - /api/Compras => Listar compras do Revendedor (Necessita JWT)
-- DELETE - /api/Compras/{id} => Excluir Compra (Necessita JWT)
-- PATCH - /api/Compras/{id} => Atualizar Compra (Necessita JWT)
+- POST /api/Compras => Adicionar nova Compra **(Necessita JWT)**
+- GET - /api/Compras => Listar compras do Revendedor **(Necessita JWT)**
+- DELETE - /api/Compras/{id} => Excluir Compra **(Necessita JWT)**
+- PATCH - /api/Compras/{id} => Atualizar Compra **(Necessita JWT)**
 
 
